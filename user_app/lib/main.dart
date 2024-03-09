@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:user_app/login.dart';
+import 'package:user_app/signup.dart';
 import 'package:get/get.dart';
 
 void main() => runApp(GetMaterialApp(home: MyHomePage()));
@@ -72,6 +73,7 @@ class MyHomePage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // Add your sign up functionality here
+                        Get.to(SignupScreen());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.white, // Background color
