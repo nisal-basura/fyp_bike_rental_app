@@ -88,7 +88,7 @@ class LoginPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.teal,
+                        backgroundColor: Colors.teal,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),
@@ -176,8 +176,8 @@ class LoginPage extends StatelessWidget {
         // Social Login
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.transparent, // Make the button transparent
-        onPrimary: Colors.white, // Text/icon color
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.transparent, // Text/icon color
         side:
             BorderSide(color: Colors.white, width: 1), // Border color and width
         shape: CircleBorder(),

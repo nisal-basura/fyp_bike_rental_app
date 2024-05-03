@@ -101,7 +101,7 @@ class _BookVehiclePageState extends State<BookVehiclePage> {
               },
               child: Text('Book Now'),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 textStyle: TextStyle(fontSize: 18),
               ),

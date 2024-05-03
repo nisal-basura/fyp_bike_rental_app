@@ -62,8 +62,8 @@ class MyHomePage extends StatelessWidget {
                         Get.to(LoginPage());
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue, // Background color
-                        onPrimary: Colors.white, // Text color
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue, // Text color
                         fixedSize: Size(120, 50), // Adjust the size as needed
                       ),
                       child: Text('LOG IN'),
@@ -77,8 +77,8 @@ class MyHomePage extends StatelessWidget {
                         Get.to(SignupScreen());
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white, // Background color
-                        onPrimary: Colors.black, // Text color
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.white, // Text color
                         fixedSize: Size(120, 50), // Adjust the size as needed
                       ),
                       child: Text('SIGN UP'),

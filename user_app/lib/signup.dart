@@ -92,8 +92,8 @@ class SignupScreen extends StatelessWidget {
       },
       child: Text('Signup'),
       style: ElevatedButton.styleFrom(
-        primary: Colors.blue, // background color
-        onPrimary: Colors.white, // text color
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue, // text color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -119,8 +119,8 @@ class SignupScreen extends StatelessWidget {
       },
       child: Text(text, style: TextStyle(fontSize: 20.0, color: textColor)),
       style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
         shape: CircleBorder(),
-        primary: Colors.white,
         backgroundColor: Colors.blueAccent,
       ),
     );
