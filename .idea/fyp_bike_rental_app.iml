@@ -6,8 +6,13 @@
       <excludeFolder url="file://$MODULE_DIR$/user_app/build" />
       <excludeFolder url="file://$MODULE_DIR$/user_app/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/user_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_user_app/user_application/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_user_app/user_application/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_user_app/user_application/.dart_tool" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
   </component>
 </module>
