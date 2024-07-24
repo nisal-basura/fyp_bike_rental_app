@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'welcome_screen.dart';
 import 'firebase_options.dart';
-import 'log.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +18,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: WelcomeScreen(),
+      home: CreateAccountScreen(),
     );
   }
 }
 
-class WelcomeScreen extends StatelessWidget {
+class CreateAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +35,15 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(flex: 2),
+              Text(
+                'Create Account',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 20),
               Image.asset(
                 'assets/bike_logo.png', // Replace with your image asset path
                 height: 150,
@@ -66,8 +73,14 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
+                    Icon(
+                      Icons.phone_iphone,
+                      size: 48,
+                      color: Colors.white,
+                    ),
+                    SizedBox(height: 10),
                     Text(
-                      'Welcome to our Bike Rental App!',
+                      'Enter Your Mobile Number',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -77,7 +90,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Whether you\'re renting out or riding, we\'ve got you covered. List your bike or find your ride with ease. Let\'s pedal together!',
+                      'We will send you a verification code',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.white,
@@ -85,35 +98,56 @@ class WelcomeScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/flag.png', // Replace with your flag image asset path
+                                width: 24,
+                                height: 24,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                '+94', // Change this to your country code
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Phone Number',
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            keyboardType: TextInputType.phone,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         // Add your navigation code here
                       },
-                      child: Text('Renter'),
+                      child: Text('Next'),
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xFF0D47A1),
-                        backgroundColor: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateAccountScreen()), // Navigate to rider login screen
-                        );
-                      },
-                      child: Text('Rider'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xFF0D47A1),
-                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color(0xFFFFC107),
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
