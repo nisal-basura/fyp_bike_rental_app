@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'welcome_screen.dart';
+//import 'welcome_screen.dart';
 import 'firebase_options.dart';
 import 'log.dart';
 
@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bike Rental App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor:
+            Color(0xFF2199FB), // Use primaryColor instead of primarySwatch,
       ),
       home: WelcomeScreen(),
     );
@@ -37,10 +38,10 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(flex: 2),
-              Image.asset(
-                'assets/bike_logo.png', // Replace with your image asset path
-                height: 150,
-              ),
+              // Image.asset(
+              //   'assets/bike_icon.png', // Replace with your image asset path
+              //   height: 150,
+              // ),
               SizedBox(height: 20),
               Text(
                 'R & R',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'create_account.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,10 +45,10 @@ class CreateAccountScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Image.asset(
-                'assets/bike_logo.png', // Replace with your image asset path
-                height: 150,
-              ),
+              // Image.asset(
+              //   'assets/bike_logo.png', // Replace with your image asset path
+              //   height: 150,
+              // ),
               SizedBox(height: 20),
               Text(
                 'R & R',
@@ -109,11 +110,11 @@ class CreateAccountScreen extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Image.asset(
-                                'assets/flag.png', // Replace with your flag image asset path
-                                width: 24,
-                                height: 24,
-                              ),
+                              // Image.asset(
+                              //   'assets/flag.png', // Replace with your flag image asset path
+                              //   width: 24,
+                              //   height: 24,
+                              // ),
                               SizedBox(width: 8),
                               Text(
                                 '+94', // Change this to your country code
@@ -142,6 +143,12 @@ class CreateAccountScreen extends StatelessWidget {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateAccountScreen1()), // Navigate to rider login screen
+                        );
                         // Add your navigation code here
                       },
                       child: Text('Next'),
