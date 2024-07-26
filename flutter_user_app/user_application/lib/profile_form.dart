@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'create_accountp2.dart'; // Ensure this import is correct based on your file structure
 
 void main() {
   runApp(MyApp());
@@ -323,7 +324,7 @@ class _ProfileFormState extends State<ProfileForm> {
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                 ),
-                items: ['Colombo', 'Kandy', 'Galle', 'Jaffna']
+                items: ['Colombo', 'Kandy', 'Galle', 'Jaffna', 'Matara']
                     .map((city) => DropdownMenuItem<String>(
                           value: city,
                           child: Text(city),
@@ -337,15 +338,30 @@ class _ProfileFormState extends State<ProfileForm> {
                 value: _selectedCity,
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Process data.
-                  }
-                },
-                child: Text('Next'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfilePage(
+                            firstName: _firstNameController.text,
+                            lastName: _lastNameController.text,
+                            dateOfBirth: _selectedDateOfBirth,
+                            gender: _selectedGender,
+                            country: _selectedCountry,
+                            email: _emailController.text,
+                            phoneNumber: _phoneNumberController.text,
+                            addressLine1: _addressLine1Controller.text,
+                            addressLine2: _addressLine2Controller.text,
+                            city: _selectedCity,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text('Next'),
                 ),
               ),
             ],
