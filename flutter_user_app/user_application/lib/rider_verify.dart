@@ -1,33 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-//import 'welcome_screen.dart';
-import 'firebase_options.dart';
-import 'log.dart';
-import 'renterlog.dart';
+import 'profile_form.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MyApp());
-}
+class CreateAccountScreenr extends StatelessWidget {
+  final String fullPhoneNumber;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bike Rental App',
-      theme: ThemeData(
-        primaryColor:
-            Color(0xFF2199FB), // Use primaryColor instead of primarySwatch,
-      ),
-      home: WelcomeScreen(),
-    );
-  }
-}
+  CreateAccountScreenr({required this.fullPhoneNumber});
 
-class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +18,7 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               Spacer(flex: 2),
               // Image.asset(
-              //   'assets/bike_icon.png', // Replace with your image asset path
-              //   height: 150,
+              // 'assets/image1.png',
               // ),
               SizedBox(height: 20),
               Text(
@@ -69,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Welcome to our Bike Rental App!',
+                      'Please Enter the 4-digit code sent via SMS to $fullPhoneNumber',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -78,8 +55,33 @@ class WelcomeScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        // Add your change phone number code here
+                      },
+                      child: Text(
+                        'Change',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFFFC107),
+                          decoration: TextDecoration.underline,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildCodeBox(context),
+                        _buildCodeBox(context),
+                        _buildCodeBox(context),
+                        _buildCodeBox(context),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     Text(
-                      'Whether you\'re renting out or riding, we\'ve got you covered. List your bike or find your ride with ease. Let\'s pedal together!',
+                      'Didn’t get the code?',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.white,
@@ -93,37 +95,15 @@ class WelcomeScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CreaterenterAccountScreen()), // Navigate to rider login screen
+                                  ProfileForm()), 
                         );
                         // Add your navigation code here
                       },
-                      child: Text('Renter'),
+                      child: Text('Next'),
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xFF0D47A1),
-                        backgroundColor: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateAccountScreen()), // Navigate to rider login screen
-                        );
-                      },
-                      child: Text('Rider'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xFF0D47A1),
-                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0xFFFFC107),
+                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -136,6 +116,31 @@ class WelcomeScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCodeBox(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextField(
+        keyboardType: TextInputType.number,
+        textAlign: TextAlign.center,
+        maxLength: 1,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          counterText: '',
+        ),
+        onChanged: (value) {
+          if (value.length == 1) {
+            FocusScope.of(context).nextFocus();
+          }
+        },
       ),
     );
   }
