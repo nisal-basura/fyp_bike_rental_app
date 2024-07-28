@@ -9,6 +9,10 @@ class BikeDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE6F2FF), // Light blue background
+      appBar: AppBar(
+        title: Text(vehicleDetails['modelOfBike']),
+        backgroundColor: Color(0xFF003366),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -493,7 +493,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => WelcomeScreen(
-                                firstName: widget.firstName,
+                                firstName: widget.firstName, vehicleDetails: {},
                               ),
                             ),
                           );
