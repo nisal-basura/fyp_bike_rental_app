@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'reg4renter.dart';
+import 'vehicle_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,12 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: VehicleDetailsScreen(),
+      home: VehicleDetailsScreen(vehicles: []),
     );
   }
 }
 
 class VehicleDetailsScreen extends StatefulWidget {
+  final List<Map<String, dynamic>> vehicles;
+
+  VehicleDetailsScreen({required this.vehicles});
+
   @override
   _VehicleDetailsScreenState createState() => _VehicleDetailsScreenState();
 }
@@ -30,63 +33,38 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
   final _yearOfManufactureController = TextEditingController();
   final _colorController = TextEditingController();
 
-  bool _helmets = false;
-  bool _firstAidKit = false;
-  bool _transmission = false;
-  bool _roadSideAssistance = false;
-  bool _mileageUnlimited = false;
-
   XFile? _vehiclePhoto1;
-  XFile? _vehiclePhoto2;
-  XFile? _vehiclePhoto3;
-
+  XFile? _vehiclePhotoSide;
+  XFile? _vehiclePhotoBack;
   final ImagePicker _picker = ImagePicker();
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
+  bool _hasHelmet = false;
+  bool _hasFirstAidKit = false;
+  bool _hasTransmission = false;
+  bool _hasRoadsideAssistance = false;
+  bool _hasUnlimitedMileage = false;
 
-  Future<void> _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _registrationNoController.text = prefs.getString('registrationNo') ?? '';
-      _modelOfBikeController.text = prefs.getString('modelOfBike') ?? '';
-      _yearOfManufactureController.text = prefs.getString('yearOfManufacture') ?? '';
-      _colorController.text = prefs.getString('color') ?? '';
-      _helmets = prefs.getBool('helmets') ?? false;
-      _firstAidKit = prefs.getBool('firstAidKit') ?? false;
-      _transmission = prefs.getBool('transmission') ?? false;
-      _roadSideAssistance = prefs.getBool('roadSideAssistance') ?? false;
-      _mileageUnlimited = prefs.getBool('mileageUnlimited') ?? false;
-    });
-  }
-
-  Future<void> _saveUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('registrationNo', _registrationNoController.text);
-    await prefs.setString('modelOfBike', _modelOfBikeController.text);
-    await prefs.setString('yearOfManufacture', _yearOfManufactureController.text);
-    await prefs.setString('color', _colorController.text);
-    await prefs.setBool('helmets', _helmets);
-    await prefs.setBool('firstAidKit', _firstAidKit);
-    await prefs.setBool('transmission', _transmission);
-    await prefs.setBool('roadSideAssistance', _roadSideAssistance);
-    await prefs.setBool('mileageUnlimited', _mileageUnlimited);
-  }
-
-  Future<void> _pickImage(ImageSource source, Function(XFile?) setImage) async {
+  Future<void> _pickImage(ImageSource source, String label) async {
     final pickedFile = await _picker.pickImage(source: source);
     setState(() {
-      setImage(pickedFile);
+      switch (label) {
+        case 'Front':
+          _vehiclePhoto1 = pickedFile;
+          break;
+        case 'Side':
+          _vehiclePhotoSide = pickedFile;
+          break;
+        case 'Back':
+          _vehiclePhotoBack = pickedFile;
+          break;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE0F7FA),
+      backgroundColor: Color.fromARGB(255, 112, 211, 224),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -95,7 +73,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
             children: [
               SizedBox(height: 40),
               Text(
-                'Create Your Profile',
+                'Enter Vehicle Details',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -139,86 +117,68 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      _buildImagePicker(
-                        'Front',
-                        _vehiclePhoto1,
-                        (file) => _vehiclePhoto1 = file,
-                      ),
+                      _buildImagePicker('Front', _vehiclePhoto1, () => _pickImage(ImageSource.gallery, 'Front')),
                       SizedBox(height: 10),
-                      _buildImagePicker(
-                        'Side',
-                        _vehiclePhoto2,
-                        (file) => _vehiclePhoto2 = file,
-                      ),
+                      _buildImagePicker('Side', _vehiclePhotoSide, () => _pickImage(ImageSource.gallery, 'Side')),
                       SizedBox(height: 10),
-                      _buildImagePicker(
-                        'Back',
-                        _vehiclePhoto3,
-                        (file) => _vehiclePhoto3 = file,
-                      ),
+                      _buildImagePicker('Back', _vehiclePhotoBack, () => _pickImage(ImageSource.gallery, 'Back')),
                       SizedBox(height: 20),
-                      Text(
-                        'Additional Details',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      _buildCheckboxRow('HELMETS(1 or 2)', _helmets, (value) {
+                      _buildCheckboxRow('HELMETS (1 or 2)', _hasHelmet, (value) {
                         setState(() {
-                          _helmets = value;
+                          _hasHelmet = value!;
                         });
                       }),
-                      _buildCheckboxRow('FIRST-AID KIT', _firstAidKit, (value) {
+                      _buildCheckboxRow('FIRST-AID KIT', _hasFirstAidKit, (value) {
                         setState(() {
-                          _firstAidKit = value;
+                          _hasFirstAidKit = value!;
                         });
                       }),
-                      _buildCheckboxRow('TRANSMISSION', _transmission, (value) {
+                      _buildCheckboxRow('TRANSMISSION', _hasTransmission, (value) {
                         setState(() {
-                          _transmission = value;
+                          _hasTransmission = value!;
                         });
                       }),
-                      _buildCheckboxRow('24/7 ROAD SIDE ASSISTANCE', _roadSideAssistance, (value) {
+                      _buildCheckboxRow('24/7 ROAD SIDE ASSISTANCE', _hasRoadsideAssistance, (value) {
                         setState(() {
-                          _roadSideAssistance = value;
+                          _hasRoadsideAssistance = value!;
                         });
                       }),
-                      _buildCheckboxRow('MILEAGE (Unlimited)', _mileageUnlimited, (value) {
+                      _buildCheckboxRow('MILEAGE (Unlimited)', _hasUnlimitedMileage, (value) {
                         setState(() {
-                          _mileageUnlimited = value;
+                          _hasUnlimitedMileage = value!;
                         });
                       }),
                       SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  UploadVehicleDocumentScreen()), 
-                        );
                             if (_formKey.currentState!.validate()) {
-                              if (_vehiclePhoto1 == null ||
-                                  _vehiclePhoto2 == null ||
-                                  _vehiclePhoto3 == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Please upload all required images'),
+                              Map<String, dynamic> newVehicle = {
+                                'registrationNo': _registrationNoController.text,
+                                'modelOfBike': _modelOfBikeController.text,
+                                'yearOfManufacture': _yearOfManufactureController.text,
+                                'color': _colorController.text,
+                                'vehiclePhotos': {
+                                  'front': _vehiclePhoto1,
+                                  'side': _vehiclePhotoSide,
+                                  'back': _vehiclePhotoBack,
+                                },
+                                'details': {
+                                  'hasHelmet': _hasHelmet,
+                                  'hasFirstAidKit': _hasFirstAidKit,
+                                  'hasTransmission': _hasTransmission,
+                                  'hasRoadsideAssistance': _hasRoadsideAssistance,
+                                  'hasUnlimitedMileage': _hasUnlimitedMileage,
+                                },
+                              };
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VehicleListScreen(
+                                    vehicles: List.from(widget.vehicles)..add(newVehicle),
                                   ),
-                                );
-                              } else {
-                                _saveUserProfile();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => NextScreen(),
-                                  ),
-                                );
-                              }
+                                ),
+                              );
                             }
                           },
                           child: Text('Next'),
@@ -264,7 +224,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
     );
   }
 
-  Widget _buildImagePicker(String label, XFile? file, Function(XFile?) setImage) {
+  Widget _buildImagePicker(String label, XFile? file, VoidCallback pickImage) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -274,7 +234,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
         ),
         SizedBox(height: 10),
         GestureDetector(
-          onTap: () => _pickImage(ImageSource.gallery, setImage),
+          onTap: pickImage,
           child: Container(
             width: double.infinity,
             height: 150,
@@ -283,7 +243,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: file == null
-                ? Center(child: Text('Your Photo', style: TextStyle(color: Colors.grey)))
+                ? Center(child: Text(' Photo', style: TextStyle(color: Colors.grey)))
                 : kIsWeb
                     ? Image.network(file.path)
                     : Image.file(File(file.path)),
@@ -294,7 +254,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
     );
   }
 
-  Widget _buildCheckboxRow(String label, bool value, Function(bool) onChanged) {
+  Widget _buildCheckboxRow(String label, bool value, Function(bool?) onChanged) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -302,44 +262,27 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
           label,
           style: TextStyle(color: Colors.white),
         ),
-        Switch(
-          value: value,
-          onChanged: onChanged,
+        Row(
+          children: [
+            Text('Yes', style: TextStyle(color: Colors.white)),
+            Checkbox(
+              value: value,
+              onChanged: onChanged,
+              activeColor: Colors.white,
+              checkColor: Colors.blue,
+            ),
+            Text('No', style: TextStyle(color: Colors.white)),
+            Checkbox(
+              value: !value,
+              onChanged: (newValue) {
+                onChanged(!newValue!);
+              },
+              activeColor: Colors.white,
+              checkColor: Colors.blue,
+            ),
+          ],
         ),
       ],
     );
   }
-
-  void _saveUserProfile() async {
-    await _saveUserData();
-    // Save user profile data logic here
-    print("Registration No: ${_registrationNoController.text}");
-    print("Model of Bike: ${_modelOfBikeController.text}");
-    print("Year of Manufacture: ${_yearOfManufactureController.text}");
-    print("Color: ${_colorController.text}");
-    print("Helmets: $_helmets");
-    print("First-Aid Kit: $_firstAidKit");
-    print("Transmission: $_transmission");
-    print("Road Side Assistance: $_roadSideAssistance");
-    print("Mileage Unlimited: $_mileageUnlimited");
-    print("Vehicle Photo 1: ${_vehiclePhoto1?.path}");
-    print("Vehicle Photo 2: ${_vehiclePhoto2?.path}");
-    print("Vehicle Photo 3: ${_vehiclePhoto3?.path}");
-  }
 }
-
-class NextScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Next Screen'),
-      ),
-      body: Center(
-        child: Text('Next Screen Content'),
-      ),
-    );
-  }
-}
-
-

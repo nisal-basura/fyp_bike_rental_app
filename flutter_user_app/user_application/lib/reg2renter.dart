@@ -154,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  VehicleDetailsScreen()), // Navigate to rider login screen
+                                  VehicleDetailsScreen(vehicles: [],)), // Navigate to rider login screen
                         );
                         _saveUserData();
                           if (_formKey.currentState!.validate()) {

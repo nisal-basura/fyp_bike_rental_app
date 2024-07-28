@@ -152,7 +152,7 @@ class WelcomeScreen extends StatelessWidget {
             },
             child: Text('Rent Now'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 201, 197, 191), // Orange button color
+              backgroundColor: const Color.fromARGB(255, 245, 243, 241), // Orange button color
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -182,7 +182,7 @@ class WelcomeScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF336699), // Match previous UI color
         selectedItemColor: Colors.orange,
-        unselectedItemColor: Color.fromARGB(255, 15, 29, 216),
+        unselectedItemColor: Color.fromARGB(255, 8, 17, 143),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
