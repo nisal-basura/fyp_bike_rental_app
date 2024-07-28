@@ -30,10 +30,15 @@ class _CreateProfileScreenState extends State<CreateProfileScreen2> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _secondaryPhoneController = TextEditingController();
+  final TextEditingController _secondaryPhoneController =
+      TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
   final TextEditingController _addressLine2Controller = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
+
+  String? _selectedGender;
+  DateTime? _selectedDateOfBirth;
+  String? _selectedCity;
 
   @override
   void initState() {
@@ -54,6 +59,20 @@ class _CreateProfileScreenState extends State<CreateProfileScreen2> {
       _addressLine2Controller.text = prefs.getString('addressLine2') ?? '';
       _cityController.text = prefs.getString('city') ?? '';
     });
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != _selectedDateOfBirth) {
+      setState(() {
+        _selectedDateOfBirth = picked;
+      });
+    }
   }
 
   Future<void> _saveUserData() async {
@@ -124,16 +143,81 @@ class _CreateProfileScreenState extends State<CreateProfileScreen2> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    _buildTextField(
-                      'Date of Birth',
-                      controller: _dobController,
-                      suffixIcon: Icons.calendar_today,
+                    TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: _selectedDateOfBirth == null
+                            ? 'Date of Birth'
+                            : _selectedDateOfBirth!
+                                .toLocal()
+                                .toString()
+                                .split(' ')[0],
+                        filled: true,
+                        fillColor: Color(0xFFCCE7FF), // Light blue fill color
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.orange),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.calendar_today, color: Colors.black),
+                          onPressed: () => _selectDate(context),
+                        ),
+                      ),
+                      cursorColor: Colors.orange,
+                      validator: (value) {
+                        if (_selectedDateOfBirth == null) {
+                          return 'Please select your date of birth';
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(height: 10),
-                    _buildTextField(
-                      'Gender',
-                      controller: _genderController,
-                      suffixIcon: Icons.arrow_drop_down,
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Gender',
+                        filled: true,
+                        fillColor: Color(0xFFCCE7FF), // Light blue fill color
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.orange),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      items: ['Male', 'Female', 'Other']
+                          .map((gender) => DropdownMenuItem<String>(
+                                value: gender,
+                                child: Text(gender),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedGender = value;
+                        });
+                      },
+                      value: _selectedGender,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select your gender';
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -166,10 +250,43 @@ class _CreateProfileScreenState extends State<CreateProfileScreen2> {
                       controller: _addressLine2Controller,
                     ),
                     SizedBox(height: 10),
-                    _buildTextField(
-                      'City',
-                      controller: _cityController,
-                      suffixIcon: Icons.arrow_drop_down,
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'City',
+                        filled: true,
+                        fillColor: Color(0xFFCCE7FF), // Light blue fill color
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.orange),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      items: ['Colombo', 'Kandy', 'Galle', 'Jaffna', 'Matara']
+                          .map((city) => DropdownMenuItem<String>(
+                                value: city,
+                                child: Text(city),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCity = value;
+                        });
+                      },
+                      value: _selectedCity,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select your city';
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
@@ -187,7 +304,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen2> {
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Color(0xFFFFC107),
-                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -204,7 +322,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen2> {
     );
   }
 
-  Widget _buildTextField(String hint, {TextEditingController? controller, IconData? suffixIcon}) {
+  Widget _buildTextField(String hint,
+      {TextEditingController? controller, IconData? suffixIcon}) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(

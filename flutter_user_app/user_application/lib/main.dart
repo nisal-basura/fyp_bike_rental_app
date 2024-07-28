@@ -77,7 +77,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 10, width: 200),
                     Text(
                       'Whether you\'re renting out or riding, we\'ve got you covered. List your bike or find your ride with ease. Let\'s pedal together!',
                       style: TextStyle(
@@ -108,7 +108,10 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(
+                      height: 20,
+                      width: 200,
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -118,10 +121,11 @@ class WelcomeScreen extends StatelessWidget {
                                   CreateAccountScreen()), // Navigate to rider login screen
                         );
                       },
-                      child: Text('Rider'),
+                      child: Text('Rider  '),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color(0xFF0D47A1),
-                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(

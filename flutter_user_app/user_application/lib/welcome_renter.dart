@@ -83,11 +83,10 @@ class _WelcomeScreenState extends State<WelcomeScreenR> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  VehicleListScreen()),
-                        );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => VehicleListScreen()),
+                    );
                     // Add your start button logic here
                   },
                   child: Text('Start'),
